@@ -4,89 +4,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>New Ashtavinayak Mobile Shop</title>
-
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;
- background:#090909;
- color:white;
- font-family:Arial,sans-serif;
-}
-header{
- background:#111;
- padding:22px 12px;
- text-align:center;
- border-bottom:2px solid #d4af37;
-}
+body{margin:0;background:#090909;color:white;font-family:Arial}
+header{text-align:center;padding:22px;background:#111;border-bottom:2px solid #d4af37}
 header h1{color:#e5c45b;margin:5px}
-header p{color:#ccc}
-nav{
- background:#171717;
- padding:14px;
- text-align:center;
-}
-nav a{
- color:#e5c45b;
- text-decoration:none;
- margin:10px;
-}
-.hero{
- text-align:center;
- padding:55px 15px;
- background:linear-gradient(135deg,#242015,#080808);
-}
+nav{background:#191919;padding:15px;text-align:center}
+nav a{color:#e5c45b;text-decoration:none;margin:10px}
+.hero{text-align:center;padding:45px 12px;background:linear-gradient(135deg,#332817,#080808)}
 .hero h2{color:#e5c45b;font-size:30px}
-.hero p{color:#ddd}
-.btn{
- display:inline-block;
- background:#d4af37;
- color:#111;
- padding:12px 20px;
- border-radius:5px;
- text-decoration:none;
- font-weight:bold;
- margin:8px;
-}
-section{padding:30px 15px}
-h2.section-title{
- color:#e5c45b;
- text-align:center;
-}
-.products{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
- gap:18px;
- max-width:1100px;
- margin:auto;
-}
-.card{
- background:#171717;
- border:1px solid #8c712b;
- border-radius:12px;
- padding:18px;
- text-align:center;
-}
-.card img{
- width:100%;
- height:160px;
- object-fit:contain;
- background:#222;
- border-radius:8px;
-}
+.btn{display:inline-block;background:#d4af37;color:#111;padding:11px 17px;border-radius:5px;text-decoration:none;font-weight:bold;margin:5px}
+section{padding:25px 12px}
+.title{text-align:center;color:#e5c45b}
+.search{display:block;width:90%;max-width:500px;margin:20px auto;padding:14px;border:1px solid #d4af37;border-radius:8px;background:#191919;color:white;font-size:16px}
+.categories{text-align:center;margin:20px auto;max-width:900px}
+.cat{background:#222;color:#e5c45b;border:1px solid #d4af37;padding:10px 15px;margin:5px;border-radius:20px;cursor:pointer}
+.cat.active{background:#d4af37;color:#111}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;max-width:1100px;margin:auto}
+.card{background:#171717;border:1px solid #8c712b;border-radius:12px;padding:16px;text-align:center}
+.card img{width:100%;height:155px;object-fit:contain;background:#222;border-radius:8px}
 .card h3{color:#e5c45b}
 .card p{color:#ccc}
-.price{color:#e5c45b;font-weight:bold}
-footer{
- background:#151515;
- text-align:center;
- padding:25px 10px;
- border-top:2px solid #d4af37;
- color:#ccc;
-}
+.price{color:#e5c45b!important;font-weight:bold}
+footer{text-align:center;background:#151515;padding:25px;border-top:2px solid #d4af37;color:#ccc}
 </style>
 </head>
-
 <body>
 
 <header>
@@ -97,83 +39,94 @@ footer{
 <nav>
 <a href="#home">Home</a>
 <a href="#mobiles">Mobiles</a>
-<a href="#accessories">Accessories</a>
 <a href="#contact">Contact</a>
 </nav>
 
 <div class="hero" id="home">
 <h2>Premium Mobiles & Accessories</h2>
-<p>Explore the latest smartphones and mobile accessories.</p>
-<a class="btn" href="#mobiles">Explore Mobiles</a>
+<p>Explore smartphones and mobile accessories</p>
+<a class="btn" href="#mobiles">Explore Products</a>
 <a class="btn" href="https://wa.me/919527031903">WhatsApp Us</a>
 </div>
 
 <section id="mobiles">
-<h2 class="section-title">Our Demo Mobiles</h2>
-<div class="products">
+<h2 class="title">Explore Our Products</h2>
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=500" alt="Smartphone">
+<input class="search" id="search" type="text" placeholder="Search Samsung, Vivo, Redmi..." onkeyup="filterProducts()">
+
+<div class="categories">
+<button class="cat active" onclick="showCategory('all',this)">All</button>
+<button class="cat" onclick="showCategory('Samsung',this)">Samsung</button>
+<button class="cat" onclick="showCategory('Vivo',this)">Vivo</button>
+<button class="cat" onclick="showCategory('Oppo',this)">Oppo</button>
+<button class="cat" onclick="showCategory('Redmi',this)">Redmi</button>
+<button class="cat" onclick="showCategory('iPhone',this)">iPhone</button>
+<button class="cat" onclick="showCategory('Accessories',this)">Accessories</button>
+</div>
+
+<div class="products" id="productList">
+
+<div class="card" data-category="Samsung">
+<img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=500" alt="Samsung phone">
 <h3>Samsung Smartphone</h3>
 <p>RAM / Storage: Ask for details</p>
 <p class="price">Price on Request</p>
-<a class="btn" href="https://wa.me/919527031903?text=I%20want%20to%20enquire%20about%20Samsung%20mobile">Enquire Now</a>
+<a class="btn" href="https://wa.me/919527031903?text=Samsung%20mobile%20enquiry">Enquire Now</a>
 </div>
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500" alt="Smartphone">
+<div class="card" data-category="Vivo">
+<img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500" alt="Vivo phone">
 <h3>Vivo Smartphone</h3>
 <p>RAM / Storage: Ask for details</p>
 <p class="price">Price on Request</p>
-<a class="btn" href="https://wa.me/919527031903?text=I%20want%20to%20enquire%20about%20Vivo%20mobile">Enquire Now</a>
+<a class="btn" href="https://wa.me/919527031903?text=Vivo%20mobile%20enquiry">Enquire Now</a>
 </div>
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500" alt="Smartphone">
+<div class="card" data-category="Oppo">
+<img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500" alt="Oppo phone">
+<h3>Oppo Smartphone</h3>
+<p>RAM / Storage: Ask for details</p>
+<p class="price">Price on Request</p>
+<a class="btn" href="https://wa.me/919527031903?text=Oppo%20mobile%20enquiry">Enquire Now</a>
+</div>
+
+<div class="card" data-category="Redmi">
+<img src="https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=500" alt="Redmi phone">
 <h3>Redmi Smartphone</h3>
 <p>RAM / Storage: Ask for details</p>
 <p class="price">Price on Request</p>
-<a class="btn" href="https://wa.me/919527031903?text=I%20want%20to%20enquire%20about%20Redmi%20mobile">Enquire Now</a>
+<a class="btn" href="https://wa.me/919527031903?text=Redmi%20mobile%20enquiry">Enquire Now</a>
 </div>
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=500" alt="Smartphone">
-<h3>iPhone</h3>
+<div class="card" data-category="iPhone">
+<img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=500" alt="iPhone">
+<h3>Apple iPhone</h3>
 <p>RAM / Storage: Ask for details</p>
 <p class="price">Price on Request</p>
-<a class="btn" href="https://wa.me/919527031903?text=I%20want%20to%20enquire%20about%20iPhone">Enquire Now</a>
+<a class="btn" href="https://wa.me/919527031903?text=iPhone%20enquiry">Enquire Now</a>
 </div>
 
-</div>
-</section>
-
-<section id="accessories">
-<h2 class="section-title">Mobile Accessories</h2>
-<div class="products">
-
-<div class="card">
+<div class="card" data-category="Accessories">
+<img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500" alt="Headphones">
 <h3>Headphones</h3>
-<p>Different styles available</p>
+<p>Mobile Accessories</p>
 <p class="price">Price on Request</p>
+<a class="btn" href="https://wa.me/919527031903?text=Accessories%20enquiry">Enquire Now</a>
 </div>
 
-<div class="card">
-<h3>Mobile Chargers</h3>
-<p>Different types available</p>
+<div class="card" data-category="Accessories">
+<img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=500" alt="Earphones">
+<h3>Earphones</h3>
+<p>Mobile Accessories</p>
 <p class="price">Price on Request</p>
-</div>
-
-<div class="card">
-<h3>Mobile Covers</h3>
-<p>Different designs available</p>
-<p class="price">Price on Request</p>
+<a class="btn" href="https://wa.me/919527031903?text=Earphones%20enquiry">Enquire Now</a>
 </div>
 
 </div>
 </section>
 
 <section id="contact">
-<h2 class="section-title">Contact Us</h2>
+<h2 class="title">Contact Us</h2>
 <div class="card">
 <h3>New Ashtavinayak Mobile Shop</h3>
 <p>Shop No. 2, Gadkari Chowk, Saoner, Maharashtra 441107</p>
@@ -187,6 +140,30 @@ footer{
 <p>© 2026 New Ashtavinayak Mobile Shop</p>
 <p>Thank You for Visiting!</p>
 </footer>
+
+<script>
+let selectedCategory = "all";
+
+function filterProducts(){
+ let search = document.getElementById("search").value.toLowerCase();
+ let cards = document.querySelectorAll(".card[data-category]");
+
+ cards.forEach(card=>{
+  let category = card.dataset.category.toLowerCase();
+  let name = card.innerText.toLowerCase();
+  let categoryMatch = selectedCategory === "all" || category === selectedCategory.toLowerCase();
+  let searchMatch = name.includes(search);
+  card.style.display = categoryMatch && searchMatch ? "" : "none";
+ });
+}
+
+function showCategory(category,button){
+ selectedCategory = category;
+ document.querySelectorAll(".cat").forEach(btn=>btn.classList.remove("active"));
+ button.classList.add("active");
+ filterProducts();
+}
+</script>
 
 </body>
 </html>
