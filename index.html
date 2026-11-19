@@ -4,97 +4,166 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>New Ashtavinayak Mobile Shop</title>
+
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial,sans-serif;background:#f5f6fa;color:#222}
-header{background:#101827;color:white;padding:20px 6%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
-header h2{color:#ffb703}
-nav a{color:white;text-decoration:none;margin:10px;font-weight:bold}
-.hero{background:linear-gradient(120deg,#101827,#23466c);color:white;text-align:center;padding:75px 15px}
-.hero h1{font-size:36px;margin-bottom:15px}
-.hero p{font-size:17px;margin-bottom:25px}
-.btn{display:inline-block;background:#ffb703;color:#111;padding:13px 25px;border-radius:7px;text-decoration:none;font-weight:bold}
-section{padding:45px 6%}
-.heading{text-align:center;font-size:28px;margin-bottom:30px}
-.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
-.card{background:white;border-radius:12px;padding:20px;text-align:center;box-shadow:0 3px 12px #0001}
-.card img{width:100%;height:170px;object-fit:contain;margin-bottom:15px}
-.card h3{margin:10px}
-.price{color:#087d42;font-weight:bold;margin:12px}
-.card a{display:inline-block;background:#128c50;color:white;padding:10px 18px;text-decoration:none;border-radius:6px}
-.about{text-align:center;line-height:2;background:white}
-footer{background:#101827;color:white;text-align:center;padding:25px;line-height:2}
+html{scroll-behavior:smooth}
+body{font-family:Arial,sans-serif;background:#080808;color:white}
+header{background:#111;padding:20px 6%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;border-bottom:1px solid #bd963e}
+.logo{color:#e8bd55;font-size:22px;font-weight:bold}
+nav a{color:white;text-decoration:none;margin:10px;font-size:14px}
+nav a:hover{color:#e8bd55}
+.hero{min-height:440px;background:linear-gradient(90deg,#080808 20%,#080808bb),url('https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=1400') center/cover;display:flex;align-items:center;padding:60px 8%}
+.hero-content{max-width:600px}
+.hero h1{font-size:48px;color:#e8bd55;margin-bottom:18px}
+.hero p{color:#ddd;line-height:1.7;margin-bottom:25px}
+.btn{display:inline-block;background:#d6ad4b;color:#111;padding:13px 23px;text-decoration:none;border-radius:5px;font-weight:bold}
+.btn:hover{background:#fff}
+.section{padding:55px 7%}
+.heading{text-align:center;color:#e8bd55;font-size:30px;margin-bottom:12px}
+.sub{text-align:center;color:#aaa;margin-bottom:35px}
+.search{display:block;width:100%;max-width:500px;margin:0 auto 35px;padding:14px;border:1px solid #b18b3b;background:#151515;color:white;border-radius:6px}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px}
+.card{background:#151515;border:1px solid #333;border-radius:10px;overflow:hidden;text-align:center;padding-bottom:20px;transition:.3s}
+.card:hover{transform:translateY(-6px);border-color:#d6ad4b}
+.card img{width:100%;height:190px;object-fit:cover;background:#222}
+.card h3{margin:16px 8px 8px;color:#f1ca69}
+.card p{color:#bbb;font-size:14px;margin:8px}
+.card a{display:inline-block;margin-top:12px;background:#d6ad4b;color:#111;padding:10px 17px;text-decoration:none;border-radius:5px;font-weight:bold}
+.brands{display:flex;justify-content:center;gap:18px;flex-wrap:wrap}
+.brand{border:1px solid #bd963e;padding:18px 28px;border-radius:8px;color:#e8bd55;font-weight:bold}
+.about{background:#141414;text-align:center;line-height:2}
+.about p{color:#ccc}
+footer{background:#050505;text-align:center;padding:25px;color:#aaa;line-height:2}
+footer strong{color:#e8bd55}
 </style>
 </head>
+
 <body>
 
 <header>
-<h2>NEW ASHTAVINAYAK</h2>
+<div class="logo">✦ ASHTAVINAYAK</div>
 <nav>
 <a href="#home">Home</a>
 <a href="#mobiles">Mobiles</a>
+<a href="#brands">Brands</a>
 <a href="#accessories">Accessories</a>
 <a href="#contact">Contact</a>
 </nav>
 </header>
 
-<div class="hero" id="home">
-<h1>Welcome to New Ashtavinayak Mobile Shop</h1>
-<p>Your Trusted Mobile & Accessories Store</p>
-<a href="#mobiles" class="btn">Explore Products</a>
+<section class="hero" id="home">
+<div class="hero-content">
+<h1>Upgrade Your Digital Life</h1>
+<p>Welcome to New Ashtavinayak Mobile Shop.
+Explore smartphones, latest technology and mobile accessories at our store.</p>
+<a href="#mobiles" class="btn">EXPLORE COLLECTION →</a>
+</div>
+</section>
+
+<section class="section" id="brands">
+<h2 class="heading">POPULAR BRANDS</h2>
+<p class="sub">Explore your favourite mobile brands</p>
+<div class="brands">
+<div class="brand">SAMSUNG</div>
+<div class="brand">APPLE</div>
+<div class="brand">VIVO</div>
+<div class="brand">OPPO</div>
+<div class="brand">REDMI</div>
+<div class="brand">REALME</div>
+</div>
+</section>
+
+<section class="section" id="mobiles">
+<h2 class="heading">SMARTPHONES</h2>
+<p class="sub">Discover our mobile phone collection</p>
+
+<input class="search" id="search" type="text" placeholder="Search mobile products...">
+
+<div class="products" id="mobileProducts">
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=500" alt="Smartphone">
+<h3>Latest Smartphones</h3>
+<p>Explore latest smartphone models</p>
+<p>Price: Contact for price</p>
+<a href="https://wa.me/919527031903?text=I%20want%20to%20know%20about%20smartphones">Enquire Now</a>
 </div>
 
-<section id="mobiles">
-<h2 class="heading">Our Mobile Collection</h2>
-<div class="products">
 <div class="card">
-<img src="https://placehold.co/300x200?text=Smartphone" alt="Smartphone">
-<h3>Smartphones</h3>
-<p>Latest Smartphones Available</p>
-<p class="price">Best Prices</p>
-<a href="https://wa.me/919527031903">Enquire Now</a>
+<img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500" alt="Mobile Phone">
+<h3>Premium Mobiles</h3>
+<p>Explore premium mobile collection</p>
+<p>Price: Contact for price</p>
+<a href="https://wa.me/919527031903?text=I%20want%20to%20know%20about%20premium%20mobiles">Enquire Now</a>
 </div>
+
 <div class="card">
-<img src="https://placehold.co/300x200?text=Android+Phone" alt="Android Phone">
+<img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=500" alt="Mobile">
 <h3>Android Phones</h3>
-<p>Explore Latest Models</p>
-<p class="price">Best Prices</p>
-<a href="https://wa.me/919527031903">Enquire Now</a>
+<p>Latest Android smartphones</p>
+<p>Price: Contact for price</p>
+<a href="https://wa.me/919527031903?text=I%20want%20to%20know%20about%20Android%20phones">Enquire Now</a>
 </div>
+
 </div>
 </section>
 
-<section id="accessories">
-<h2 class="heading">Mobile Accessories</h2>
+<section class="section" id="accessories">
+<h2 class="heading">MOBILE ACCESSORIES</h2>
+<p class="sub">Everything your smartphone needs</p>
+
 <div class="products">
+
 <div class="card">
-<img src="https://placehold.co/300x200?text=Earphones" alt="Earphones">
-<h3>Earphones</h3>
-<p>Quality Audio Accessories</p>
-<a href="https://wa.me/919527031903">Enquire Now</a>
+<img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500" alt="Headphones">
+<h3>Headphones</h3>
+<p>Audio accessories</p>
+<a href="https://wa.me/919527031903?text=I%20want%20headphones">Enquire Now</a>
 </div>
+
 <div class="card">
-<img src="https://placehold.co/300x200?text=Chargers" alt="Chargers">
-<h3>Chargers & Cables</h3>
-<p>Mobile Charging Accessories</p>
-<a href="https://wa.me/919527031903">Enquire Now</a>
+<img src="https://images.unsplash.com/photo-1609592424845-6c1f2e0c4f1b?w=500" alt="Charger">
+<h3>Chargers</h3>
+<p>Charging accessories</p>
+<a href="https://wa.me/919527031903?text=I%20want%20a%20charger">Enquire Now</a>
 </div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1603313011101-320f26a4f6f6?w=500" alt="Phone case">
+<h3>Mobile Covers</h3>
+<p>Stylish mobile protection</p>
+<a href="https://wa.me/919527031903?text=I%20want%20mobile%20covers">Enquire Now</a>
+</div>
+
 </div>
 </section>
 
-<section class="about" id="contact">
-<h2>Visit Our Shop</h2>
-<p>New Ashtavinayak Mobile Shop</p>
+<section class="section about" id="contact">
+<h2 class="heading">VISIT OUR STORE</h2>
+<p><strong>New Ashtavinayak Mobile Shop</strong></p>
 <p>Shop No. 2, Gadkari Chowk, Saoner, Maharashtra 441107</p>
 <p>Call: 8624038686</p>
 <p>WhatsApp: 9527031903</p>
-<a class="btn" href="https://wa.me/919527031903">Contact on WhatsApp</a>
+<br>
+<a class="btn" href="https://wa.me/919527031903">CHAT ON WHATSAPP</a>
 </section>
 
 <footer>
-<p>© 2026 New Ashtavinayak Mobile Shop</p>
-<p>Thank You for Visiting!</p>
+<strong>NEW ASHTAVINAYAK MOBILE SHOP</strong>
+<p>Your Trusted Mobile & Accessories Store</p>
+<p>© 2026 All Rights Reserved</p>
 </footer>
+
+<script>
+const search = document.getElementById("search");
+search.addEventListener("input", function(){
+const cards = document.querySelectorAll("#mobileProducts .card");
+cards.forEach(card => {
+card.style.display = card.innerText.toLowerCase().includes(this.value.toLowerCase()) ? "" : "none";
+});
+});
+</script>
 
 </body>
 </html>
