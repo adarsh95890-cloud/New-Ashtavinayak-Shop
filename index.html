@@ -125,6 +125,28 @@ footer{text-align:center;background:#151515;padding:25px;border-top:2px solid #d
 </div>
 </section>
 
+<section id="adminDashboard" style="display:none">
+<h2 class="title">Admin Dashboard</h2>
+
+<div class="card" style="max-width:500px;margin:auto">
+<h3>Add New Product</h3>
+
+<input id="productName" class="search" placeholder="Product Name">
+
+<input id="productCategory" class="search" placeholder="Category (Samsung, Vivo, etc.)">
+
+<input id="productPrice" class="search" placeholder="Product Price">
+
+<input id="productImage" class="search" placeholder="Image URL">
+
+<button class="btn" onclick="addProduct()">Add Product</button>
+
+<p id="productMessage"></p>
+</div>
+
+<div id="adminProductList" class="products"></div>
+</section>
+
 <section id="contact">
 <h2 class="title">Contact Us</h2>
 <div class="card">
@@ -212,6 +234,8 @@ window.adminLogin = async function() {
   try {
     await signInWithEmailAndPassword(auth, email, password);
     message.innerText = "Login Successful!";
+document.getElementById("adminDashboard").style.display = "block";
+document.getElementById("adminLogin").style.display = "none";
     message.style.color = "lightgreen";
   } catch (error) {
     message.innerText = "Login Failed: " + error.message;
