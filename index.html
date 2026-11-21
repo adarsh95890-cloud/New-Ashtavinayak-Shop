@@ -208,7 +208,7 @@ function showCategory(category,button){
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { getFirestore, addDoc, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCaLr49fzYOf_L-AZ8HRnKLpZiOvEKv6HQ",
@@ -225,6 +225,38 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 console.log("Firebase initialized successfully");
+
+window.addProduct = async function() {
+  const name = document.getElementById("productName").value.trim();
+  const category = document.getElementById("productCategory").value.trim();
+  const price = document.getElementById("productPrice").value.trim();
+  const image = document.getElementById("productImage").value.trim();
+  const message = document.getElementById("productMessage");
+
+  if (!auth.currentUser) {
+    message.innerText = "Please login first";
+    return;
+  }
+
+  if (!name || !category || !price || !image) {
+    message.innerText = "Please fill all fields";
+    return;
+  }
+
+  try {
+    await addDoc(collection(db, "products"), {
+      name: name,
+      category: category,
+      price: price,
+      image: image,
+      createdAt: new Date()
+    });
+
+    message.innerText = "Product saved successfully!";
+  } catch (error) {
+    message.innerText = "Error: " + error.message;
+  }
+};
 
 window.adminLogin = async function() {
   const email = document.getElementById("adminEmail").value;
