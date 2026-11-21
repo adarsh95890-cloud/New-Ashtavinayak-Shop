@@ -275,6 +275,44 @@ document.getElementById("adminLogin").style.display = "none";
   }
 };
 
+window.loadProducts = async function() {
+  const list = document.getElementById("productList");
+
+  try {
+    const snapshot = await getDocs(collection(db, "products"));
+
+    list.querySelectorAll("[data-firestore-product]").forEach(card => card.remove());
+
+    snapshot.forEach((item) => {
+      const product = item.data();
+
+      const card = document.createElement("div");
+      card.className = "card";
+      card.dataset.category = product.category;
+      card.dataset.firestoreProduct = "true";
+
+      const img = document.createElement("img");
+      img.src = product.image;
+      img.alt = product.name;
+
+      const name = document.createElement("h3");
+      name.textContent = product.name;
+
+      const price = document.createElement("p");
+      price.className = "price";
+      price.textContent = "₹" + product.price;
+
+      card.append(img, name, price);
+      list.appendChild(card);
+    });
+
+  } catch (error) {
+    console.error("Products loading error:", error);
+  }
+};
+
+window.loadProducts();
+
 </script>
 
 </body>
