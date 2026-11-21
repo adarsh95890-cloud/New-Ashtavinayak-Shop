@@ -136,6 +136,24 @@ footer{text-align:center;background:#151515;padding:25px;border-top:2px solid #d
 </div>
 </section>
 
+<section id="adminLogin" style="display:none;text-align:center">
+<h2 class="title">Admin Login</h2>
+
+<div class="card" style="max-width:400px;margin:auto">
+<input id="adminEmail" type="email" placeholder="Admin Email" class="search">
+<input id="adminPassword" type="password" placeholder="Password" class="search">
+
+<button class="btn" onclick="adminLogin()">Login</button>
+<button class="btn" onclick="document.getElementById('adminLogin').style.display='none'">Close</button>
+
+<p id="loginMessage"></p>
+</div>
+</section>
+
+<button class="btn" onclick="document.getElementById('adminLogin').style.display='block'">
+Admin Login
+</button>
+
 <footer>
 <p>© 2026 New Ashtavinayak Mobile Shop</p>
 <p>Thank You for Visiting!</p>
@@ -167,7 +185,7 @@ function showCategory(category,button){
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -185,6 +203,21 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 console.log("Firebase initialized successfully");
+
+window.adminLogin = async function() {
+  const email = document.getElementById("adminEmail").value;
+  const password = document.getElementById("adminPassword").value;
+  const message = document.getElementById("loginMessage");
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    message.innerText = "Login Successful!";
+    message.style.color = "lightgreen";
+  } catch (error) {
+    message.innerText = "Login Failed: " + error.message;
+    message.style.color = "red";
+  }
+};
 
 </script>
 
