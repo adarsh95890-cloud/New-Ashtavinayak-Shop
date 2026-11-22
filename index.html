@@ -185,14 +185,18 @@ Admin Login
 let selectedCategory = "all";
 
 function filterProducts(){
- let search = document.getElementById("search").value.toLowerCase();
- let cards = document.querySelectorAll(".card[data-category]");
+ let search = document.getElementById("search").value.toLowerCase().trim();
+ let cards = document.querySelectorAll("#productList .card[data-category]");
 
  cards.forEach(card=>{
-  let category = card.dataset.category.toLowerCase();
+  let category = (card.dataset.category || "").toLowerCase().trim();
   let name = card.innerText.toLowerCase();
-  let categoryMatch = selectedCategory === "all" || category === selectedCategory.toLowerCase();
+
+  let categoryMatch = selectedCategory === "all" ||
+                      category === selectedCategory.toLowerCase().trim();
+
   let searchMatch = name.includes(search);
+
   card.style.display = categoryMatch && searchMatch ? "" : "none";
  });
 }
