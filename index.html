@@ -52,7 +52,7 @@ footer{text-align:center;background:#151515;padding:25px;border-top:2px solid #d
 <section id="mobiles">
 <h2 class="title">Explore Our Products</h2>
 
-<input class="search" id="search" type="text" placeholder="Search Samsung, Vivo, Redmi..." onkeyup="filterProducts()">
+<input class="search" id="search" type="search" name="product-search" placeholder="Search Samsung, Vivo, Redmi..." autocomplete="off" oninput="filterProducts()">
 
 <div class="categories">
 <button class="cat active" onclick="showCategory('all',this)">All</button>
