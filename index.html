@@ -253,12 +253,11 @@ window.addProduct = async function() {
     });
 
     message.innerText = "Product saved successfully!";
+ window.loadProducts();
   } catch (error) {
     message.innerText = "Error: " + error.message;
   }
 };
-
-
 
 window.adminLogin = async function() {
   const email = document.getElementById("adminEmail").value;
@@ -267,14 +266,17 @@ window.adminLogin = async function() {
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
+
     message.innerText = "Login Successful!";
-document.getElementById("adminDashboard").style.display = "block";
-document.getElementById("adminLogin").style.display = "none";
+    document.getElementById("adminDashboard").style.display = "block";
+    document.getElementById("adminLogin").style.display = "none";
     message.style.color = "lightgreen";
+
+    window.loadProducts();
+
   } catch (error) {
     message.innerText = "Login Failed: " + error.message;
     message.style.color = "red";
-window.loadProducts();
   }
 };
 
