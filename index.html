@@ -174,7 +174,8 @@ cursor:pointer;
 
  <section id="adminDashboard" style="display:none">
 <h2 class="title">Admin Dashboard</h2>
-
+<button class="btn" onclick="adminLogout()">Logout</button>
+   
 <div class="card" style="max-width:500px;margin:auto">
 <h3>Add New Product</h3>
 
@@ -284,7 +285,7 @@ function showCategory(category,button){
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import { getFirestore, addDoc, collection, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -391,6 +392,25 @@ window.adminLogin = async function() {
   }
 };
 
+window.adminLogout = async function() {
+  try {
+    await signOut(auth);
+
+    document.getElementById("adminDashboard").style.display = "none";
+    document.getElementById("adminLogin").style.display = "block";
+
+    document.getElementById("adminEmail").value = "";
+    document.getElementById("adminPassword").value = "";
+
+    document.getElementById("loginMessage").innerText = "Logged out successfully";
+
+    window.loadProducts();
+
+  } catch (error) {
+    alert("Logout Error: " + error.message);
+  }
+};
+  
 window.openProductDetails = function(name, category, price, ram, storage, image) {
   document.getElementById("detailName").textContent = name;
   document.getElementById("detailCategory").textContent = category;
@@ -517,6 +537,7 @@ window.loadProducts();
 
 </body>
 </html>
+
 
 
 
