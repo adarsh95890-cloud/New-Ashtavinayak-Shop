@@ -170,6 +170,7 @@ cursor:pointer;
     <p id="detailRam"></p>
 <p id="detailStorage"></p>
     <p id="detailStock"></p>
+    <p id="detailDescription"></p>
     <h3 id="detailPrice" class="price"></h3>
     <a id="detailWhatsApp" class="btn" href="#" target="_blank">Enquire on WhatsApp</a>
   </div>
@@ -192,6 +193,8 @@ cursor:pointer;
 
 <input id="productStorage" class="search" placeholder="Storage (e.g. 128GB)">
 
+<textarea id="productDescription" class="search" placeholder="Product Description"></textarea>
+  
 <select id="productStock" class="search">
   <option value="In Stock">In Stock</option>
   <option value="Out of Stock">Out of Stock</option>
@@ -287,6 +290,7 @@ function showCategory(category,button){
     card.dataset.ram,
     card.dataset.storage,
    card.dataset.stock,
+   card.dataset.description,
     image.src
 );
 });
@@ -321,6 +325,7 @@ window.addProduct = async function() {
   const ram = document.getElementById("productRam").value.trim();
 const storage = document.getElementById("productStorage").value.trim();
 const stock = document.getElementById("productStock").value; 
+const description = document.getElementById("productDescription").value.trim();
   const message = document.getElementById("productMessage");
 
   if (!auth.currentUser) {
@@ -371,6 +376,7 @@ if (imageFile.size > 5 * 1024 * 1024) {
       ram: ram,
       storage: storage,
       stock: stock,
+      description: description,
       createdAt: new Date()
     });
 
@@ -422,13 +428,15 @@ window.adminLogout = async function() {
   }
 };
   
-window.openProductDetails = function(name, category, price, ram, storage,stock,image) {
+window.openProductDetails = function(name, category, price, ram, storage, stock, description, image) {
   document.getElementById("detailName").textContent = name;
   document.getElementById("detailCategory").textContent = category;
 document.getElementById("detailRam").textContent = "RAM: " + (ram || "Not specified");
 document.getElementById("detailStorage").textContent = "Storage: " + (storage || "Not specified");
  document.getElementById("detailStock").textContent =
   "Stock Status: " + (stock || "In Stock");
+  document.getElementById("detailDescription").textContent =
+  "Description: " + (description || "No description available");
   document.getElementById("detailPrice").textContent = "₹" + price;
   document.getElementById("detailImage").src = image;
 
@@ -462,6 +470,7 @@ document.getElementById("totalProducts").innerText =
       card.dataset.ram = product.ram || "";
 card.dataset.storage = product.storage || "";
      card.dataset.stock = product.stock || "In Stock";
+    card.dataset.description = product.description || "";
       card.dataset.firestoreProduct = "true";
 
       const img = document.createElement("img");
@@ -552,6 +561,7 @@ window.loadProducts();
 
 </body>
 </html>
+
 
 
 
