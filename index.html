@@ -27,6 +27,41 @@ section{padding:25px 12px}
 .card p{color:#ccc}
 .price{color:#e5c45b!important;font-weight:bold}
 footer{text-align:center;background:#151515;padding:25px;border-top:2px solid #d4af37;color:#ccc}
+.product-details{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.9);
+z-index:9999;
+overflow:auto;
+padding:30px 15px;
+}
+
+.details-box{
+max-width:450px;
+margin:40px auto;
+background:#171717;
+border:2px solid #d4af37;
+border-radius:12px;
+padding:20px;
+text-align:center;
+}
+
+.details-box img{
+width:100%;
+height:250px;
+object-fit:contain;
+}
+
+.close-details{
+float:right;
+color:#e5c45b;
+font-size:25px;
+cursor:pointer;
+}
 </style>
 </head>
 <body>
@@ -124,8 +159,18 @@ footer{text-align:center;background:#151515;padding:25px;border-top:2px solid #d
 
 </div>
 </section>
+<div class="product-details" id="productDetails">
+  <div class="details-box">
+    <span class="close-details" onclick="closeProductDetails()">×</span>
+    <img id="detailImage" src="" alt="Product">
+    <h2 id="detailName" class="title"></h2>
+    <p id="detailCategory"></p>
+    <h3 id="detailPrice" class="price"></h3>
+    <a id="detailWhatsApp" class="btn" href="#" target="_blank">Enquire on WhatsApp</a>
+  </div>
+</div>
 
-<section id="adminDashboard" style="display:none">
+ <section id="adminDashboard" style="display:none">
 <h2 class="title">Admin Dashboard</h2>
 
 <div class="card" style="max-width:500px;margin:auto">
@@ -207,6 +252,26 @@ function showCategory(category,button){
  button.classList.add("active");
  filterProducts();
 }
+ document.getElementById("productList").addEventListener("click", function(event) {
+
+  if (event.target.closest("a, button")) return;
+
+  const card = event.target.closest(".card[data-category]");
+  if (!card) return;
+
+  const image = card.querySelector("img");
+  const name = card.querySelector("h3");
+  const price = card.querySelector(".price");
+
+  if (!image || !name || !price) return;
+
+  window.openProductDetails(
+    name.textContent,
+    card.dataset.category,
+    price.textContent,
+    image.src
+  );
+});
 </script>
 
 <script type="module">
@@ -284,6 +349,23 @@ window.adminLogin = async function() {
   }
 };
 
+ window.openProductDetails = function(name, category, price, image) {
+  document.getElementById("detailName").textContent = name;
+  document.getElementById("detailCategory").textContent = category;
+  document.getElementById("detailPrice").textContent = "₹" + price;
+  document.getElementById("detailImage").src = image;
+
+  document.getElementById("detailWhatsApp").href =
+    "https://wa.me/919527031903?text=" +
+    encodeURIComponent("I am interested in " + name);
+
+  document.getElementById("productDetails").style.display = "block";
+};
+
+window.closeProductDetails = function() {
+  document.getElementById("productDetails").style.display = "none";
+};
+ 
 window.loadProducts = async function() {
   const list = document.getElementById("productList");
 
@@ -382,3 +464,4 @@ window.loadProducts();
 
 </body>
 </html>
+
