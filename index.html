@@ -165,6 +165,8 @@ cursor:pointer;
     <img id="detailImage" src="" alt="Product">
     <h2 id="detailName" class="title"></h2>
     <p id="detailCategory"></p>
+    <p id="detailRam"></p>
+<p id="detailStorage"></p>
     <h3 id="detailPrice" class="price"></h3>
     <a id="detailWhatsApp" class="btn" href="#" target="_blank">Enquire on WhatsApp</a>
   </div>
@@ -182,6 +184,10 @@ cursor:pointer;
 
 <input id="productPrice" class="search" placeholder="Product Price">
 
+<input id="productRam" class="search" placeholder="RAM (e.g. 8GB)">
+
+<input id="productStorage" class="search" placeholder="Storage (e.g. 128GB)">
+  
 <input id="productImage" class="search" placeholder="Image URL">
 
 <button class="btn" onclick="addProduct()">Add Product</button>
@@ -265,12 +271,14 @@ function showCategory(category,button){
 
   if (!image || !name || !price) return;
 
-  window.openProductDetails(
+ window.openProductDetails(
     name.textContent,
     card.dataset.category,
     price.textContent,
+    card.dataset.ram,
+    card.dataset.storage,
     image.src
-  );
+);
 });
 </script>
 
@@ -300,6 +308,8 @@ window.addProduct = async function() {
   const category = document.getElementById("productCategory").value.trim();
   const price = document.getElementById("productPrice").value.trim();
   const image = document.getElementById("productImage").value.trim();
+  const ram = document.getElementById("productRam").value.trim();
+const storage = document.getElementById("productStorage").value.trim();
   const message = document.getElementById("productMessage");
 
   if (!auth.currentUser) {
@@ -307,7 +317,7 @@ window.addProduct = async function() {
     return;
   }
 
-  if (!name || !category || !price || !image) {
+  if (!name || !category || !price || !ram || !storage || !image) { 
     message.innerText = "Please fill all fields";
     return;
   }
@@ -318,6 +328,8 @@ window.addProduct = async function() {
       category: category,
       price: price,
       image: image,
+      ram: ram,
+      storage: storage,
       createdAt: new Date()
     });
 
@@ -349,9 +361,11 @@ window.adminLogin = async function() {
   }
 };
 
- window.openProductDetails = function(name, category, price, image) {
+window.openProductDetails = function(name, category, price, ram, storage, image) {
   document.getElementById("detailName").textContent = name;
   document.getElementById("detailCategory").textContent = category;
+document.getElementById("detailRam").textContent = "RAM: " + (ram || "Not specified");
+document.getElementById("detailStorage").textContent = "Storage: " + (storage || "Not specified");
   document.getElementById("detailPrice").textContent = "₹" + price;
   document.getElementById("detailImage").src = image;
 
@@ -381,6 +395,8 @@ window.loadProducts = async function() {
       const card = document.createElement("div");
       card.className = "card";
       card.dataset.category = product.category;
+      card.dataset.ram = product.ram || "";
+card.dataset.storage = product.storage || "";
       card.dataset.firestoreProduct = "true";
 
       const img = document.createElement("img");
@@ -413,6 +429,11 @@ window.loadProducts = async function() {
           const newPrice = prompt("Enter new price:", product.price);
           if (newPrice === null) return;
 
+          const newRam = prompt("Enter new RAM:", product.ram || "");
+const newStorage = prompt("Enter new Storage:", product.storage || "");
+          if (newRam === null) return;
+if (newStorage === null) return;
+
           const newImage = prompt("Enter new image URL:", product.image);
           if (newImage === null) return;
 
@@ -421,6 +442,8 @@ window.loadProducts = async function() {
               name: newName.trim(),
               category: newCategory.trim(),
               price: newPrice.trim(),
+              ram: newRam.trim(),
+              storage: newStorage.trim(),
               image: newImage.trim()
             });
 
@@ -464,4 +487,5 @@ window.loadProducts();
 
 </body>
 </html>
+
 
