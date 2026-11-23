@@ -188,8 +188,8 @@ cursor:pointer;
 
 <input id="productStorage" class="search" placeholder="Storage (e.g. 128GB)">
   
-<input id="productImage" class="search" placeholder="Image URL">
-
+<input id="productImage" class="search" type="file" accept="image/*">
+  
 <button class="btn" onclick="addProduct()">Add Product</button>
 
 <p id="productMessage"></p>
@@ -307,7 +307,7 @@ window.addProduct = async function() {
   const name = document.getElementById("productName").value.trim();
   const category = document.getElementById("productCategory").value.trim();
   const price = document.getElementById("productPrice").value.trim();
-  const image = document.getElementById("productImage").value.trim();
+ const imageFile = document.getElementById("productImage").files[0];
   const ram = document.getElementById("productRam").value.trim();
 const storage = document.getElementById("productStorage").value.trim();
   const message = document.getElementById("productMessage");
@@ -317,24 +317,54 @@ const storage = document.getElementById("productStorage").value.trim();
     return;
   }
 
-  if (!name || !category || !price || !ram || !storage || !image) { 
+  if (!name || !category || !price || !ram || !storage || !imageFile) {
     message.innerText = "Please fill all fields";
     return;
   }
+if (!imageFile.type.startsWith("image/")) {
+  message.innerText = "Please select an image file";
+  return;
+}
 
+if (imageFile.size > 5 * 1024 * 1024) {
+  message.innerText = "Image must be under 5 MB";
+  return;
+}
+  
   try {
+    const formData = new FormData();
+
+    formData.append("file", imageFile);
+    formData.append("upload_preset", "ashtavinayak_products");
+
+    const uploadResponse = await fetch(
+      "https://api.cloudinary.com/v1_1/bfccpg36/image/upload",
+      {
+        method: "POST",
+        body: formData
+      }
+    );
+
+    if (!uploadResponse.ok) {
+      throw new Error("Image upload failed");
+    }
+
+    const uploadData = await uploadResponse.json();
+    const imageUrl = uploadData.secure_url;
+
     await addDoc(collection(db, "products"), {
       name: name,
       category: category,
       price: price,
-      image: image,
+      image: imageUrl,
       ram: ram,
       storage: storage,
       createdAt: new Date()
     });
 
     message.innerText = "Product saved successfully!";
- window.loadProducts();
+    window.loadProducts();
+
   } catch (error) {
     message.innerText = "Error: " + error.message;
   }
@@ -487,5 +517,6 @@ window.loadProducts();
 
 </body>
 </html>
+
 
 
