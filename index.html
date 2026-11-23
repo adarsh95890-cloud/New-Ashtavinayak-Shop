@@ -98,7 +98,9 @@ cursor:pointer;
 <button class="cat" onclick="showCategory('iPhone',this)">iPhone</button>
 <button class="cat" onclick="showCategory('Accessories',this)">Accessories</button>
 </div>
-
+<h3 id="totalProducts" style="text-align:center;color:#d4af37;">
+  Total Products: 0
+</h3>
 <div class="products" id="productList">
 
 <div class="card" data-category="Samsung">
@@ -435,7 +437,8 @@ window.loadProducts = async function() {
 
   try {
     const snapshot = await getDocs(collection(db, "products"));
-
+document.getElementById("totalProducts").innerText =
+  "Total Products: " + snapshot.size;
     list.querySelectorAll("[data-firestore-product]").forEach(card => card.remove());
 
     snapshot.forEach((item) => {
@@ -537,6 +540,7 @@ window.loadProducts();
 
 </body>
 </html>
+
 
 
 
