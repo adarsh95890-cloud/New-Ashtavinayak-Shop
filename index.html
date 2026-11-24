@@ -92,7 +92,30 @@ section{padding:25px 12px}
 .card h3{color:#e5c45b}
 .card p{color:#ccc}
 .price{color:#e5c45b!important;font-weight:bold}
-footer{text-align:center;background:#151515;padding:25px;border-top:2px solid #d4af37;color:#ccc}
+.card{
+  background:linear-gradient(145deg,#202020,#101010);
+  border:1px solid #9c802f;
+  border-radius:14px;
+  padding:18px;
+  transition:all 0.3s ease;
+  box-shadow:0 4px 12px rgba(0,0,0,0.4);
+}
+
+.card:hover{
+  transform:translateY(-6px);
+  border-color:#f5d76e;
+  box-shadow:0 8px 22px rgba(212,175,55,0.3);
+}
+
+.card img{
+  border-radius:10px;
+  transition:transform 0.3s ease;
+}
+
+.card img:hover{
+  transform:scale(1.04);
+}
+  footer{text-align:center;background:#151515;padding:25px;border-top:2px solid #d4af37;color:#ccc}
 .product-details{
 display:none;
 position:fixed;
