@@ -175,9 +175,25 @@ cursor:pointer;
     <a id="detailWhatsApp" class="btn" href="#" target="_blank">Enquire on WhatsApp</a>
   </div>
 </div>
+<section id="customerEnquiry" style="padding:20px;text-align:center">
+  <h2 class="title">Customer Enquiry</h2>
 
+  <div class="card" style="max-width:450px;margin:auto">
+    <input id="customerName" class="search" placeholder="Your Name">
+
+    <input id="customerPhone" class="search" type="tel" placeholder="Mobile Number">
+
+    <textarea id="customerMessage" class="search" placeholder="Your Enquiry"></textarea>
+
+    <button class="btn" onclick="submitEnquiry()">Submit Enquiry</button>
+
+    <p id="enquiryMessage"></p>
+  </div>
+</section>
  <section id="adminDashboard" style="display:none">
 <h2 class="title">Admin Dashboard</h2>
+   <h3 class="title">Customer Enquiries</h3>
+<div id="adminEnquiryList" class="products"></div>
 <button class="btn" onclick="adminLogout()">Logout</button>
    
 <div class="card" style="max-width:500px;margin:auto">
@@ -402,7 +418,7 @@ window.adminLogin = async function() {
     message.style.color = "lightgreen";
 
     window.loadProducts();
-
+window.loadEnquiries();
   } catch (error) {
     message.innerText = "Login Failed: " + error.message;
     message.style.color = "red";
@@ -425,6 +441,73 @@ window.adminLogout = async function() {
 
   } catch (error) {
     alert("Logout Error: " + error.message);
+  }
+};
+window.loadEnquiries = async function() {
+  const list = document.getElementById("adminEnquiryList");
+  list.innerHTML = "Loading enquiries...";
+
+  try {
+    const snapshot = await getDocs(collection(db, "enquiries"));
+
+    list.innerHTML = "";
+
+    if (snapshot.empty) {
+      list.innerHTML = "No enquiries yet.";
+      return;
+    }
+
+    snapshot.forEach((docSnap) => {
+      const enquiry = docSnap.data();
+
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const name = document.createElement("h3");
+      name.textContent = enquiry.name;
+
+      const phone = document.createElement("p");
+      phone.textContent = "Phone: " + enquiry.phone;
+
+      const message = document.createElement("p");
+      message.textContent = "Message: " + enquiry.message;
+
+      card.append(name, phone, message);
+      list.appendChild(card);
+    });
+
+  } catch (error) {
+    list.innerText = "Error: " + error.message;
+  }
+};
+  window.submitEnquiry = async function() {
+  const name = document.getElementById("customerName").value.trim();
+  const phone = document.getElementById("customerPhone").value.trim();
+  const message = document.getElementById("customerMessage").value.trim();
+
+  const result = document.getElementById("enquiryMessage");
+
+  if (!name || !phone || !message) {
+    result.innerText = "Please fill all fields";
+    return;
+  }
+
+  try {
+    await addDoc(collection(db, "enquiries"), {
+      name: name,
+      phone: phone,
+      message: message,
+      createdAt: new Date()
+    });
+
+    result.innerText = "Enquiry submitted successfully!";
+
+    document.getElementById("customerName").value = "";
+    document.getElementById("customerPhone").value = "";
+    document.getElementById("customerMessage").value = "";
+
+  } catch (error) {
+    result.innerText = "Error: " + error.message;
   }
 };
   
