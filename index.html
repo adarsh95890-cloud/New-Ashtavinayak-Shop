@@ -472,7 +472,22 @@ window.loadEnquiries = async function() {
       const message = document.createElement("p");
       message.textContent = "Message: " + enquiry.message;
 
-      card.append(name, phone, message);
+      const contactBtn = document.createElement("a");
+contactBtn.textContent = "Contact Customer";
+contactBtn.className = "btn";
+contactBtn.href = "https://wa.me/91" + enquiry.phone.replace(/\D/g, "");
+contactBtn.target = "_blank";
+
+const deleteBtn = document.createElement("button");
+deleteBtn.textContent = "Delete Enquiry";
+deleteBtn.className = "btn";
+deleteBtn.onclick = async function() {
+  if (confirm("Delete this enquiry?")) {
+    await deleteDoc(doc(db, "enquiries", docSnap.id));
+    window.loadEnquiries();
+  }
+};
+      card.append(name, phone, message, contactBtn, deleteBtn);
       list.appendChild(card);
     });
 
