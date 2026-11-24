@@ -356,6 +356,31 @@ footer hr{
     <p id="enquiryMessage"></p>
   </div>
 </section>
+
+  <section id="customerReviews" style="padding:20px;text-align:center">
+  <h2 class="title">Customer Reviews & Ratings ⭐</h2>
+
+  <div class="card" style="max-width:450px;margin:auto">
+    <input id="reviewName" class="search" placeholder="Your Name">
+
+    <select id="reviewRating" class="search">
+      <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+      <option value="4">⭐⭐⭐⭐ Very Good</option>
+      <option value="3">⭐⭐⭐ Good</option>
+      <option value="2">⭐⭐ Fair</option>
+      <option value="1">⭐ Poor</option>
+    </select>
+
+    <textarea id="reviewMessage" class="search"
+      placeholder="Write Your Review"></textarea>
+
+    <button class="btn" onclick="submitReview()">
+      Submit Review
+    </button>
+  </div>
+ <h3 class="title">What Our Customers Say</h3>
+<div id="reviewList" class="products"></div>   
+</section>
  <section id="adminDashboard" style="display:none">
 <h2 class="title">Admin Dashboard</h2>
    <h3 class="title">Customer Enquiries</h3>
@@ -689,6 +714,66 @@ deleteBtn.onclick = async function() {
 
   } catch (error) {
     result.innerText = "Error: " + error.message;
+  }
+};
+
+window.submitReview = async function() {
+  window.loadReviews = async function() {
+  const reviewList = document.getElementById("reviewList");
+
+  try {
+    const snapshot = await getDocs(collection(db, "reviews"));
+    reviewList.innerHTML = "";
+
+    snapshot.forEach((docSnap) => {
+      const review = docSnap.data();
+
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const name = document.createElement("h3");
+      name.textContent = review.name;
+
+      const rating = document.createElement("p");
+      rating.textContent = "⭐".repeat(review.rating);
+
+      const message = document.createElement("p");
+      message.textContent = review.message;
+
+      card.append(name, rating, message);
+      reviewList.appendChild(card);
+    });
+
+  } catch (error) {
+    reviewList.textContent = "Unable to load reviews";
+  }
+};
+
+window.loadReviews();
+  const name = document.getElementById("reviewName").value.trim();
+  const rating = document.getElementById("reviewRating").value;
+  const message = document.getElementById("reviewMessage").value.trim();
+
+  if (!name || !message) {
+    alert("Please enter your name and review");
+    return;
+  }
+
+  try {
+    await addDoc(collection(db, "reviews"), {
+      name: name,
+      rating: Number(rating),
+      message: message,
+      createdAt: new Date()
+    });
+
+    alert("Review submitted successfully!");
+window.loadReviews();
+    document.getElementById("reviewName").value = "";
+    document.getElementById("reviewMessage").value = "";
+
+  } catch (error) {
+    alert("Error: " + error.message);
   }
 };
   
