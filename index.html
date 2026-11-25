@@ -981,7 +981,12 @@ if ((product.stock || "").toLowerCase().trim() === "out of stock") {
 
           const newPrice = prompt("Enter new price:", product.price);
           if (newPrice === null) return;
+const newStock = prompt(
+  "Enter Stock Status (In Stock / Out of Stock):",
+  product.stock || "In Stock"
+);
 
+if (newStock === null) return;
           const newRam = prompt("Enter new RAM:", product.ram || "");
 const newStorage = prompt("Enter new Storage:", product.storage || "");
           if (newRam === null) return;
@@ -997,6 +1002,7 @@ if (newStorage === null) return;
               price: newPrice.trim(),
               ram: newRam.trim(),
               storage: newStorage.trim(),
+              stock: newStock.trim(),
               image: newImage.trim()
             });
 
