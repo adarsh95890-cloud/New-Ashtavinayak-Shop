@@ -927,6 +927,17 @@ document.getElementById("totalProducts").innerText =
       const productId = item.id;
 
       const card = document.createElement("div");
+      card.dataset.firestoreProduct = "true";
+
+card.dataset.firestoreProduct = "true";
+
+if ((product.stock || "").toLowerCase().trim() === "out of stock") {
+  const badge = document.createElement("span");
+  badge.textContent = "OUT OF STOCK";
+  badge.style.cssText = "display:block;background:red;color:white;padding:7px;margin:8px 0;border-radius:5px;font-weight:bold;text-align:center;";
+  card.appendChild(badge);
+}
+      
       card.className = "card";
       card.dataset.category = product.category;
       card.dataset.ram = product.ram || "";
@@ -934,7 +945,13 @@ card.dataset.storage = product.storage || "";
      card.dataset.stock = product.stock || "In Stock";
     card.dataset.description = product.description || "";
       card.dataset.firestoreProduct = "true";
-
+if ((product.stock || "").toLowerCase().trim() === "out of stock") {
+  const badge = document.createElement("span");
+  badge.textContent = "OUT OF STOCK";
+  badge.style.cssText =
+    "display:block;background:red;color:white;padding:7px;margin:8px 0;border-radius:5px;font-weight:bold;text-align:center;";
+  card.appendChild(badge);
+}
       const img = document.createElement("img");
       img.src = product.image;
       img.alt = product.name;
