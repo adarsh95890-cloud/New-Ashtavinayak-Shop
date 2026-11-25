@@ -981,12 +981,49 @@ if ((product.stock || "").toLowerCase().trim() === "out of stock") {
 
           const newPrice = prompt("Enter new price:", product.price);
           if (newPrice === null) return;
-const newStock = prompt(
-  "Enter Stock Status (In Stock / Out of Stock):",
-  product.stock || "In Stock"
-);
+
+const newStock = await new Promise((resolve) => {
+  const select = document.createElement("select");
+
+  select.style.cssText =
+    "padding:12px;margin:10px;width:90%;font-size:16px;";
+
+  select.innerHTML = `
+    <option value="In Stock">In Stock</option>
+    <option value="Out of Stock">Out of Stock</option>
+  `;
+
+  select.value = product.stock || "In Stock";
+
+  const box = document.createElement("div");
+  box.style.cssText =
+    "position:fixed;top:40%;left:10%;width:80%;background:white;padding:20px;z-index:10000;text-align:center;border-radius:10px;color:black;";
+
+  const heading = document.createElement("h3");
+  heading.textContent = "Select Stock Status";
+
+  const ok = document.createElement("button");
+  ok.textContent = "Save";
+
+  const cancel = document.createElement("button");
+  cancel.textContent = "Cancel";
+
+  ok.onclick = () => {
+    box.remove();
+    resolve(select.value);
+  };
+
+  cancel.onclick = () => {
+    box.remove();
+    resolve(null);
+  };
+
+  box.append(heading, select, ok, cancel);
+  document.body.appendChild(box);
+});
 
 if (newStock === null) return;
+          
           const newRam = prompt("Enter new RAM:", product.ram || "");
 const newStorage = prompt("Enter new Storage:", product.storage || "");
           if (newRam === null) return;
