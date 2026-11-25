@@ -473,10 +473,6 @@ footer hr{
 </div>
 </section>
 
-<button class="btn" onclick="document.getElementById('adminLogin').style.display='block'">
-Admin Login
-</button>
-
 <footer id="contact">
   <h2>New Ashtavinayak Mobile Shop</h2>
  <p>🕒 Opening Hours: 9:30 AM - 9:30 PM</p>
@@ -1082,6 +1078,12 @@ window.loadProducts();
 
 </script>
 
+<script>
+if (window.location.hash === "#admin") {
+  document.getElementById("adminLogin").style.display = "block";
+}
+</script>
+  
 </body>
 </html>
 
