@@ -271,7 +271,11 @@ footer hr{
 <h2 class="title">Explore Our Products</h2>
 
 <input class="search" id="search" type="text" name="shop-product-search" placeholder="Search Samsung, Vivo, Redmi..." value="" autocomplete="new-password" oninput="filterProducts()">
-
+<select id="sortProducts" class="search" onchange="sortProducts()">
+  <option value="">Sort Products By Price</option>
+  <option value="low">Price: Low to High</option>
+  <option value="high">Price: High to Low</option>
+</select>
 <div class="categories">
 <button class="cat active" onclick="showCategory('all',this)">All</button>
 <button class="cat" onclick="showCategory('Samsung',this)">Samsung</button>
@@ -520,6 +524,34 @@ function showCategory(category,button){
  button.classList.add("active");
  filterProducts();
 }
+ function sortProducts() {
+  const productList = document.getElementById("productList");
+  const sortValue = document.getElementById("sortProducts").value;
+
+  if (!sortValue) return;
+
+  const cards = Array.from(
+    productList.querySelectorAll(".card[data-category]")
+  );
+
+  cards.sort((a, b) => {
+    const priceA = Number(
+      (a.innerText.match(/₹\s*[\d,]+/) || ["0"])[0].replace(/[₹,\s]/g, "")
+    );
+
+    const priceB = Number(
+      (b.innerText.match(/₹\s*[\d,]+/) || ["0"])[0].replace(/[₹,\s]/g, "")
+    );
+
+    return sortValue === "low"
+      ? priceA - priceB
+      : priceB - priceA;
+  });
+
+  cards.forEach(card => productList.appendChild(card));
+
+  filterProducts();
+} 
  document.getElementById("productList").addEventListener("click", function(event) {
 
   if (event.target.closest("a, button")) return;
