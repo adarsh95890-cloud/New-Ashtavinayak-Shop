@@ -383,6 +383,8 @@ footer hr{
 </section>
  <section id="adminDashboard" style="display:none">
 <h2 class="title">Admin Dashboard</h2>
+  <h3 class="title">Customer Reviews</h3>
+<div id="adminReviewList" class="products"></div>
    <h3 class="title">Customer Enquiries</h3>
 <div id="adminEnquiryList" class="products"></div>
 <button class="btn" onclick="adminLogout()">Logout</button>
@@ -718,12 +720,18 @@ deleteBtn.onclick = async function() {
 };
 
 window.submitReview = async function() {
-  window.loadReviews = async function() {
+ window.loadReviews = async function() {
   const reviewList = document.getElementById("reviewList");
+  const adminReviewList = document.getElementById("adminReviewList");
 
   try {
     const snapshot = await getDocs(collection(db, "reviews"));
+
     reviewList.innerHTML = "";
+
+    if (adminReviewList) {
+      adminReviewList.innerHTML = "";
+    }
 
     snapshot.forEach((docSnap) => {
       const review = docSnap.data();
@@ -742,13 +750,30 @@ window.submitReview = async function() {
 
       card.append(name, rating, message);
       reviewList.appendChild(card);
+
+      if (adminReviewList) {
+        const adminCard = card.cloneNode(true);
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete Review";
+        deleteBtn.className = "btn";
+
+        deleteBtn.onclick = async function() {
+          if (confirm("Delete this review?")) {
+            await deleteDoc(doc(db, "reviews", docSnap.id));
+            window.loadReviews();
+          }
+        };
+
+        adminCard.appendChild(deleteBtn);
+        adminReviewList.appendChild(adminCard);
+      }
     });
 
   } catch (error) {
     reviewList.textContent = "Unable to load reviews";
   }
 };
-
 window.loadReviews();
   const name = document.getElementById("reviewName").value.trim();
   const rating = document.getElementById("reviewRating").value;
