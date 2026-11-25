@@ -383,6 +383,24 @@ footer hr{
 </section>
  <section id="adminDashboard" style="display:none">
 <h2 class="title">Admin Dashboard</h2>
+   <div class="products" style="margin:20px 0">
+
+  <div class="card">
+    <h3>Total Products</h3>
+    <h2 id="totalProducts">0</h2>
+  </div>
+
+  <div class="card">
+    <h3>Total Enquiries</h3>
+    <h2 id="totalEnquiries">0</h2>
+  </div>
+
+  <div class="card">
+    <h3>Total Reviews</h3>
+    <h2 id="totalReviews">0</h2>
+  </div>
+
+</div>
   <h3 class="title">Customer Reviews</h3>
 <div id="adminReviewList" class="products"></div>
    <h3 class="title">Customer Enquiries</h3>
@@ -612,6 +630,7 @@ window.adminLogin = async function() {
 
     window.loadProducts();
 window.loadEnquiries();
+    window.loadStats();
   } catch (error) {
     message.innerText = "Login Failed: " + error.message;
     message.style.color = "red";
@@ -764,7 +783,21 @@ window.submitReview = async function() {
             window.loadReviews();
           }
         };
+        
+window.loadStats = async function() {
+  try {
+    const products = await getDocs(collection(db, "products"));
+    const enquiries = await getDocs(collection(db, "enquiries"));
+    const reviews = await getDocs(collection(db, "reviews"));
 
+    document.getElementById("totalProducts").textContent = products.size;
+    document.getElementById("totalEnquiries").textContent = enquiries.size;
+    document.getElementById("totalReviews").textContent = reviews.size;
+
+  } catch (error) {
+    console.log("Stats Error:", error.message);
+  }
+};
         adminCard.appendChild(deleteBtn);
         adminReviewList.appendChild(adminCard);
       }
