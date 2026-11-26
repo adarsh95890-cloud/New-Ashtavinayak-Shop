@@ -694,7 +694,6 @@ window.loadEnquiries();
 window.adminLogout = async function() {
   try {
     await signOut(auth);
-    localStorage.removeItem("showAdminLogin");
 
     document.getElementById("adminDashboard").style.display = "none";
     document.getElementById("adminLogin").style.display = "block";
