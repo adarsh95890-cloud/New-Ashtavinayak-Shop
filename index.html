@@ -286,7 +286,7 @@ footer hr{
 <button class="cat" onclick="showCategory('iPhone',this)">iPhone</button>
 <button class="cat" onclick="showCategory('Accessories',this)">Accessories</button>
 </div>
-<h3 id="totalProducts" style="text-align:center;color:#d4af37;">
+<h3 id="publicTotalProducts" style="text-align:center;color:#d4af37;">
   Total Products: 0
 </h3>
 <div class="products" id="productList">
@@ -366,7 +366,7 @@ footer hr{
 <section id="customerEnquiry" style="padding:20px;text-align:center">
   <h2 class="title">Customer Enquiry</h2>
 
-  <div id="reviewForm" class="card" style="max-width:450px;margin:auto">
+  <div id="enquiryForm" class="card" style="max-width:450px;margin:auto">
     <input id="customerName" class="search" placeholder="Your Name">
 
     <input id="customerPhone" class="search" type="tel" placeholder="Mobile Number">
@@ -382,8 +382,8 @@ footer hr{
   <section id="customerReviews" style="padding:20px;text-align:center">
   <h2 class="title">Customer Reviews & Ratings ⭐</h2>
 
- <div id="reviewForm" class="card" style="max-width:450px;margin:auto">
-    <input id="reviewName" class="search" placeholder="Your Name">
+ <div id="customerReviewForm" class="card" style="max-width:450px;margin:auto">
+    <input id="reviewName" class="search" placeholder="Your Name" maxlength="60">
 
     <select id="reviewRating" class="search">
       <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
@@ -393,15 +393,14 @@ footer hr{
       <option value="1">⭐ Poor</option>
     </select>
 
-    <textarea id="reviewMessage" class="search"
+    <textarea id="reviewMessage" class="search" maxlength="1000"
       placeholder="Write Your Review"></textarea>
 
     <button class="btn" onclick="submitReview()">
       Submit Review
     </button>
   </div>
- <h3 class="title">What Our Customers Say</h3>
-<div id="reviewList" class="products"></div>   
+ <p style="color:#ccc;text-align:center">Thank you for sharing your feedback!</p>   
 </section>
  <section id="adminDashboard" style="display:none">
 <h2 class="title">Admin Dashboard</h2>
@@ -678,12 +677,13 @@ localStorage.setItem("showAdminLogin", "true");
     message.innerText = "Login Successful!";
     document.getElementById("adminDashboard").style.display = "block";
     document.getElementById("customerEnquiry").style.display = "none";
-   document.getElementById("reviewForm").style.display = "none";
+    document.getElementById("customerReviews").style.display = "none";
     document.getElementById("adminLogin").style.display = "none";
     message.style.color = "lightgreen";
 
     window.loadProducts();
 window.loadEnquiries();
+    window.loadReviews();
     window.loadStats();
   } catch (error) {
     message.innerText = "Login Failed: " + error.message;
@@ -694,9 +694,12 @@ window.loadEnquiries();
 window.adminLogout = async function() {
   try {
     await signOut(auth);
+    localStorage.removeItem("showAdminLogin");
 
     document.getElementById("adminDashboard").style.display = "none";
     document.getElementById("adminLogin").style.display = "block";
+    document.getElementById("customerEnquiry").style.display = "block";
+    document.getElementById("customerReviews").style.display = "block";
 
     document.getElementById("adminEmail").value = "";
     document.getElementById("adminPassword").value = "";
@@ -792,53 +795,102 @@ deleteBtn.onclick = async function() {
   }
 };
 
-window.submitReview = async function() {
- window.loadReviews = async function() {
-  const reviewList = document.getElementById("reviewList");
+window.loadReviews = async function() {
   const adminReviewList = document.getElementById("adminReviewList");
+
+  if (!auth.currentUser ||
+      auth.currentUser.email !== "9527031903@newashtavinayak.com") {
+    if (adminReviewList) adminReviewList.textContent = "Admin access required.";
+    return;
+  }
+
+  adminReviewList.innerHTML = "Loading reviews...";
 
   try {
     const snapshot = await getDocs(collection(db, "reviews"));
+    adminReviewList.innerHTML = "";
 
-    reviewList.innerHTML = "";
-
-    if (adminReviewList) {
-      adminReviewList.innerHTML = "";
+    if (snapshot.empty) {
+      adminReviewList.textContent = "No reviews submitted yet.";
+      return;
     }
 
     snapshot.forEach((docSnap) => {
       const review = docSnap.data();
-
       const card = document.createElement("div");
       card.className = "card";
 
       const name = document.createElement("h3");
-      name.textContent = review.name;
+      name.textContent = review.name || "Customer";
 
       const rating = document.createElement("p");
-      rating.textContent = "⭐".repeat(review.rating);
+      rating.textContent = "⭐".repeat(
+        Math.max(1, Math.min(5, Number(review.rating) || 1))
+      );
 
       const message = document.createElement("p");
-      message.textContent = review.message;
+      message.textContent = review.message || "";
 
-      card.append(name, rating, message);
-      reviewList.appendChild(card);
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "Delete Review";
+      deleteBtn.className = "btn";
+      deleteBtn.onclick = async function() {
+        if (!confirm("Delete this review?")) return;
 
-      if (adminReviewList) {
-        const adminCard = card.cloneNode(true);
+        try {
+          await deleteDoc(doc(db, "reviews", docSnap.id));
+          await window.loadReviews();
+          await window.loadStats();
+        } catch (error) {
+          alert("Delete Error: " + error.message);
+        }
+      };
 
-        const deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "Delete Review";
-        deleteBtn.className = "btn";
+      card.append(name, rating, message, deleteBtn);
+      adminReviewList.appendChild(card);
+    });
+  } catch (error) {
+    adminReviewList.textContent = "Unable to load reviews: " + error.message;
+  }
+};
 
-        deleteBtn.onclick = async function() {
-          if (confirm("Delete this review?")) {
-            await deleteDoc(doc(db, "reviews", docSnap.id));
-            window.loadReviews();
-          }
-        };
-        
+window.submitReview = async function() {
+  const name = document.getElementById("reviewName").value.trim();
+  const rating = Number(document.getElementById("reviewRating").value);
+  const message = document.getElementById("reviewMessage").value.trim();
+
+  if (!name || !message) {
+    alert("Please enter your name and review.");
+    return;
+  }
+
+  if (name.length > 60 || message.length > 1000 || rating < 1 || rating > 5) {
+    alert("Please check your review details. Name max 60 characters and review max 1000 characters.");
+    return;
+  }
+
+  try {
+    await addDoc(collection(db, "reviews"), {
+      name: name,
+      rating: rating,
+      message: message,
+      createdAt: new Date()
+    });
+
+    alert("Review submitted successfully!");
+    document.getElementById("reviewName").value = "";
+    document.getElementById("reviewMessage").value = "";
+  } catch (error) {
+    alert("Error submitting review: " + error.message);
+  }
+};
+
 window.loadStats = async function() {
+  if (!auth.currentUser ||
+      auth.currentUser.email !== "9527031903@newashtavinayak.com") {
+    return;
+  }
+
   try {
     const products = await getDocs(collection(db, "products"));
     const enquiries = await getDocs(collection(db, "enquiries"));
@@ -847,48 +899,11 @@ window.loadStats = async function() {
     document.getElementById("totalProducts").textContent = products.size;
     document.getElementById("totalEnquiries").textContent = enquiries.size;
     document.getElementById("totalReviews").textContent = reviews.size;
-
   } catch (error) {
     console.log("Stats Error:", error.message);
   }
 };
-        adminCard.appendChild(deleteBtn);
-        adminReviewList.appendChild(adminCard);
-      }
-    });
 
-  } catch (error) {
-    reviewList.textContent = "Unable to load reviews";
-  }
-};
-window.loadReviews();
-  const name = document.getElementById("reviewName").value.trim();
-  const rating = document.getElementById("reviewRating").value;
-  const message = document.getElementById("reviewMessage").value.trim();
-
-  if (!name || !message) {
-    alert("Please enter your name and review");
-    return;
-  }
-
-  try {
-    await addDoc(collection(db, "reviews"), {
-      name: name,
-      rating: Number(rating),
-      message: message,
-      createdAt: new Date()
-    });
-
-    alert("Review submitted successfully!");
-window.loadReviews();
-    document.getElementById("reviewName").value = "";
-    document.getElementById("reviewMessage").value = "";
-
-  } catch (error) {
-    alert("Error: " + error.message);
-  }
-};
-  
 window.openProductDetails = function(name, category, price, ram, storage, stock, description, image) {
   document.getElementById("detailName").textContent = name;
   document.getElementById("detailCategory").textContent = category;
@@ -917,7 +932,7 @@ window.loadProducts = async function() {
 
   try {
     const snapshot = await getDocs(collection(db, "products"));
-document.getElementById("totalProducts").innerText =
+document.getElementById("publicTotalProducts").innerText =
   "Total Products: " + snapshot.size;
     list.querySelectorAll("[data-firestore-product]").forEach(card => card.remove());
 
