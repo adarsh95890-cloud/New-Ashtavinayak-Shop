@@ -674,7 +674,7 @@ window.adminLogin = async function() {
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
-
+localStorage.setItem("showAdminLogin", "true");
     message.innerText = "Login Successful!";
     document.getElementById("adminDashboard").style.display = "block";
     document.getElementById("adminLogin").style.display = "none";
@@ -1085,9 +1085,22 @@ if (window.location.hash === "#admin") {
 </script>
 
 <script>
-if (window.location.search === "?admin") {
-  document.getElementById("adminLogin").style.display = "block";
-}
+(function () {
+  if (window.location.search === "?admin") {
+    document.getElementById("adminLogin").style.display = "block";
+  }
+
+  if (localStorage.getItem("showAdminLogin") === "true") {
+    const button = document.createElement("button");
+    button.className = "btn";
+    button.textContent = "Admin Login";
+    button.onclick = function () {
+      document.getElementById("adminLogin").style.display = "block";
+    };
+
+    document.getElementById("adminLogin").before(button);
+  }
+})();
 </script>
   
 </body>
