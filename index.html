@@ -366,7 +366,7 @@ footer hr{
 <section id="customerEnquiry" style="padding:20px;text-align:center">
   <h2 class="title">Customer Enquiry</h2>
 
-  <div class="card" style="max-width:450px;margin:auto">
+  <div id="reviewForm" class="card" style="max-width:450px;margin:auto">
     <input id="customerName" class="search" placeholder="Your Name">
 
     <input id="customerPhone" class="search" type="tel" placeholder="Mobile Number">
@@ -382,7 +382,7 @@ footer hr{
   <section id="customerReviews" style="padding:20px;text-align:center">
   <h2 class="title">Customer Reviews & Ratings ⭐</h2>
 
-  <div class="card" style="max-width:450px;margin:auto">
+ <div id="reviewForm" class="card" style="max-width:450px;margin:auto">
     <input id="reviewName" class="search" placeholder="Your Name">
 
     <select id="reviewRating" class="search">
@@ -677,6 +677,8 @@ window.adminLogin = async function() {
 localStorage.setItem("showAdminLogin", "true");
     message.innerText = "Login Successful!";
     document.getElementById("adminDashboard").style.display = "block";
+    document.getElementById("customerEnquiry").style.display = "none";
+   document.getElementById("reviewForm").style.display = "none";
     document.getElementById("adminLogin").style.display = "none";
     message.style.color = "lightgreen";
 
