@@ -1107,25 +1107,27 @@ if (window.location.hash === "#admin") {
     document.getElementById("adminLogin").style.display = "block";
   }
 
-  if (localStorage.getItem("showAdminLogin") === "true") {
-    const button = document.createElement("button");
-    button.className = "btn";
-    button.textContent = "Admin Login";
-    button.onclick = function () {
-      document.getElementById("adminLogin").style.display = "block";
-    };
+const params = new URLSearchParams(window.location.search);
 
-    document.getElementById("adminLogin").before(button);
-  }
+if (params.get("admin") === "1") {
+  document.getElementById("adminLogin").style.display = "block";
+}
+
+if (localStorage.getItem("showAdminLogin") === "true") {
+  const button = document.createElement("button");
+  button.className = "btn";
+  button.textContent = "Admin Login";
+
+  button.onclick = function () {
+    document.getElementById("adminLogin").style.display = "block";
+  };
+
+  document.getElementById("adminLogin").before(button);
+}
 })();
 </script>
   
 </body>
 </html>
-
-
-
-
-
 
 
