@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://adarsh95890-cloud.github.io/New-Ashtavinayak-Shop/sitemap.xml
