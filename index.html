@@ -799,7 +799,7 @@ window.loadReviews = async function() {
   const adminReviewList = document.getElementById("adminReviewList");
 
   if (!auth.currentUser ||
-      auth.currentUser.email !== "9527031903@newashtavinayak.com") {
+      auth.currentUser.email !== "8624038686@newashtavinayak.com") {
     if (adminReviewList) adminReviewList.textContent = "Admin access required.";
     return;
   }
@@ -887,7 +887,7 @@ window.submitReview = async function() {
 
 window.loadStats = async function() {
   if (!auth.currentUser ||
-      auth.currentUser.email !== "9527031903@newashtavinayak.com") {
+      auth.currentUser.email !== "8624038686@newashtavinayak.com") {
     return;
   }
 
@@ -980,7 +980,7 @@ if ((product.stock || "").toLowerCase().trim() === "out of stock") {
       card.append(img, name, price);
 
       if (auth.currentUser &&
-          auth.currentUser.email === "9527031903@newashtavinayak.com") {
+          auth.currentUser.email === "8624038686@newashtavinayak.com") {
 
         const editBtn = document.createElement("button");
         editBtn.textContent = "Edit";
